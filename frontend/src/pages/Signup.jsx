@@ -1,7 +1,21 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
-
+import { useForm } from "react-hook-form";
+import axios from "axios";
 export function SignUp() {
+  const { register, handleSubmit } = useForm();
+
+  const registerUser = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/user/register",
+        data
+      );
+      console.log(response.data); // Log response from the server
+    } catch (error) {
+      console.log(error); // Handle error
+    }
+  };
   return (
     <section>
       <div className='grid grid-cols-1 lg:grid-cols-2'>
@@ -20,7 +34,7 @@ export function SignUp() {
                 Sign In
               </a>
             </p>
-            <form action='#' method='POST' className='mt-8'>
+            <form onSubmit={handleSubmit(registerUser)} className='mt-8'>
               <div className='space-y-5'>
                 <div>
                   <label
@@ -32,6 +46,7 @@ export function SignUp() {
                   </label>
                   <div className='mt-2'>
                     <input
+                      {...register("name")}
                       className='flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50'
                       type='text'
                       placeholder='Full Name'
@@ -49,6 +64,7 @@ export function SignUp() {
                   </label>
                   <div className='mt-2'>
                     <input
+                      {...register("email")}
                       className='flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50'
                       type='email'
                       placeholder='Email'
@@ -68,6 +84,7 @@ export function SignUp() {
                   </div>
                   <div className='mt-2'>
                     <input
+                      {...register("password")}
                       className='flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50'
                       type='password'
                       placeholder='Password'
@@ -77,7 +94,7 @@ export function SignUp() {
                 </div>
                 <div>
                   <button
-                    type='button'
+                    type='submit'
                     className='inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80'
                   >
                     Create Account <ArrowRight className='ml-2' size={16} />

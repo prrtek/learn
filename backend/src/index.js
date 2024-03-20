@@ -5,7 +5,7 @@ import { app } from "./app.js";
 dotenv.config({
   path: "../.env",
 });
-
+app.use(express.json());
 connectDB()
   .then(() => {
     app.listen(process.env.PORT || 1000, () => {

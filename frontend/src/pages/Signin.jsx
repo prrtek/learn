@@ -1,7 +1,26 @@
 import React from "react";
-import { ArrowRight } from "lucide-react";
-
+import { ArrowRight, Loader, LoaderCircle } from "lucide-react";
+import { useForm, Form } from "react-hook-form";
+import { useState } from "react";
+import axios from "axios";
 export function SignIn() {
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm();
+
+  const loginUser = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/user/login",
+        data
+      );
+      console.log(response.data); // Log response from the server
+    } catch (error) {
+      console.log(error); // Handle error
+    }
+  };
   return (
     <section>
       <div className='grid grid-cols-1 lg:grid-cols-2'>
@@ -20,7 +39,7 @@ export function SignIn() {
                 Create a free account
               </a>
             </p>
-            <form action='#' method='POST' className='mt-8'>
+            <form onSubmit={handleSubmit(loginUser)} className='mt-8'>
               <div className='space-y-5'>
                 <div>
                   <label
@@ -32,6 +51,7 @@ export function SignIn() {
                   </label>
                   <div className='mt-2'>
                     <input
+                      {...register("email")}
                       className='flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50'
                       type='email'
                       placeholder='Email'
@@ -58,6 +78,7 @@ export function SignIn() {
                   </div>
                   <div className='mt-2'>
                     <input
+                      {...register("password")}
                       className='flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50'
                       type='password'
                       placeholder='Password'
@@ -66,10 +87,11 @@ export function SignIn() {
                 </div>
                 <div>
                   <button
-                    type='button'
+                    disabled={isSubmitting}
+                    type='submit'
                     className='inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80'
                   >
-                    Get started <ArrowRight className='ml-2' size={16} />
+                    {isSubmitting ? <Loader /> : "Get started"}
                   </button>
                 </div>
               </div>
