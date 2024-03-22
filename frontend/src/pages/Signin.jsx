@@ -3,6 +3,7 @@ import { ArrowRight, Loader, LoaderCircle } from "lucide-react";
 import { useForm, Form } from "react-hook-form";
 import { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 export function SignIn() {
   const {
     register,
@@ -16,9 +17,11 @@ export function SignIn() {
         "http://localhost:3000/api/user/login",
         data
       );
+      toast.success("Logged in successfully");
       console.log(response.data); // Log response from the server
     } catch (error) {
-      console.log(error); // Handle error
+      console.log(error);
+      toast.error("Something went wrong"); // Handle error
     }
   };
   return (
